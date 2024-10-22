@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/output.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="w-full bg-gray-900 min-h-screen text-white text-lg p-8">
+    <h1 class="w-full text-center p-2 text-xl">Taleem Database</h1>
+    
+    <table class="w-full border-collapse">
+        <thead>
+            <tr>
+                <th class="border border-gray-600 bg-gray-800 p-3 text-left">#</th>
+                <th class="border border-gray-600 bg-gray-800 p-3 text-left">Name</th>
+                <th class="border border-gray-600 bg-gray-800 p-3 text-left">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach((item, index) => { %>
+                <tr class="hover:bg-gray-700">
+                    <td class="border border-gray-600 bg-gray-800 p-3"><%= index + 1 %></td>
+                    <td class="border border-gray-600 bg-gray-800 p-3"><%= item.name %></td>
+                    <td class="border border-gray-600 bg-gray-800 p-3">
+                        <%= typeof item.value === 'number' ? item.value.toLocaleString() : item.value %>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

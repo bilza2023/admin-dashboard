@@ -234,6 +234,42 @@ class Diagnoser {
     countSlidesWithExtra() {
         return this.slidesWithSlideExtra().length; // Return the count of slides with extra data
     }
+    getUniqueSlideTypes() {
+        const slideTypes = new Set();
+        this.data.forEach(item => {
+            item.slides.forEach(slide => {
+                slideTypes.add(slide.type);
+            });
+        });
+        return Array.from(slideTypes);
+    }
+    
+    // 2. Get unique tcode
+    getUniqueTcode() {
+        const tcodes = new Set();
+        this.data.forEach(item => {
+            tcodes.add(item.tcode);
+        });
+        return Array.from(tcodes);
+    }
+    
+    // 3. Get unique item.extra.command for canvas slides
+    getUniqueItemType( ) {
+        const commands = new Set();
+        this.data.forEach(item => {
+            item.slides.forEach(slide => {
+                if (slide.type === "canvas") {
+                    slide.items.forEach(item => {
+                        if (item.extra && item.extra.command) {
+                            commands.add(item.extra.command);
+                        }
+                    });
+                }
+            });
+        });
+        return Array.from(commands);
+    }
+    
 }
 
 module.exports = Diagnoser;
