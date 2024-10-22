@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item List</title>
-    <!-- Link to Tailwind CSS output file -->
-    <link rel="stylesheet" href="/output.css"> <!-- Ensure this matches the output path from your Tailwind build -->
+    <link href="/output.css" rel="stylesheet">
+    <title>Document</title>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <header class="p-4 bg-blue-900 text-white">
-        <h1 class="text-3xl font-bold">Hello, Tailwind!</h1>
-
-        <h1 class="text-2xl font-bold">Presentation List</h1>
-    </header>
-    <main class="p-4">
-        <ul class="list-disc pl-5">
-            <% database.forEach(item => { %>
-                <li class="py-2">
-                    <strong class="text-lg"><%= item._id %></strong>: <%= item.tcode %> 
-                </li>
+<body>
+    <div class="w-full bg-gray-900 min-h-screen text-white text-lg p-8">
+    <h1 class="w-full text-center p-2 text-xl">Taleem Database</h1>
+    
+    <table class="w-full border-collapse">
+        <thead>
+            <tr>
+                <th class="border border-gray-600 bg-gray-800 p-3 text-left">#</th>
+                <th class="border border-gray-600 bg-gray-800 p-3 text-left">Name</th>
+                <th class="border border-gray-600 bg-gray-800 p-3 text-left">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach((item, index) => { %>
+                <tr class="hover:bg-gray-700">
+                    <td class="border border-gray-600 bg-gray-800 p-3"><%= index + 1 %></td>
+                    <td class="border border-gray-600 bg-gray-800 p-3"><%= item.name %></td>
+                    <td class="border border-gray-600 bg-gray-800 p-3">
+                        <%= typeof item.value === 'number' ? item.value.toLocaleString() : item.value %>
+                    </td>
+                </tr>
             <% }); %>
-        </ul>
-    </main>
-
-    <%- include('partials/footer.ejs') %>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
