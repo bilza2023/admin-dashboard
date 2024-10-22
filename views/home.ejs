@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Express + Svelte</title>
-  <link rel='stylesheet' href='/build/bundle.css'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item List</title>
+    <!-- Link to Tailwind CSS output file -->
+    <link rel="stylesheet" href="/output.css"> <!-- Ensure this matches the output path from your Tailwind build -->
 </head>
-<body>
-  <div id="svelte-app"></div>
-  <script defer src="/build/bundle.js"></script>
+<body class="bg-gray-100 text-gray-800">
+    <header class="p-4 bg-blue-900 text-white">
+        <h1 class="text-3xl font-bold">Hello, Tailwind!</h1>
+
+        <h1 class="text-2xl font-bold">Presentation List</h1>
+    </header>
+    <main class="p-4">
+        <ul class="list-disc pl-5">
+            <% database.forEach(item => { %>
+                <li class="py-2">
+                    <strong class="text-lg"><%= item._id %></strong>: <%= item.tcode %> 
+                </li>
+            <% }); %>
+        </ul>
+    </main>
+
+    <%- include('partials/footer.ejs') %>
 </body>
 </html>
