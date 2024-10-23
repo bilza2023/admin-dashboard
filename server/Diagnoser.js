@@ -196,7 +196,7 @@ class Diagnoser {
         return count;
     }
 
-    getCanvasSlidesUniqueCommands() {
+    getUniqueCanvasItems() {
         const commands = [];
         this.data.forEach(q => {
             q.slides.forEach(slide => {

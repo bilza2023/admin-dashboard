@@ -1,9 +1,17 @@
 
-async function healthFn(diagnoser,availableSlideTypes){
+async function healthFn(diagnoser,availableSlideTypes,availableCanvasItems){
 const data = [];
 
 const uniqueSlideTypes = diagnoser.getUniqueSlideTypes();
 const missingSlideTypes = uniqueSlideTypes.filter(item => !availableSlideTypes.includes(item));
+
+const uniqueCanvasItems = diagnoser.getUniqueCanvasItems();
+const missingCanvasItems = uniqueCanvasItems.filter(item => !availableCanvasItems.includes(item));
+
+data.push({ name: "uniqueCanvasItems", value: uniqueCanvasItems.join(" ")  });
+
+data.push({ name: "availableCanvasItems", value: availableCanvasItems.join(" ")  });
+data.push({ name: "missingCanvasItems", value: missingCanvasItems.join(" ")  });
 
 
 

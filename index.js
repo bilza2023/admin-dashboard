@@ -24,9 +24,30 @@ app.get('/', async (req, res) => {
 
 app.get('/health', async (req, res) => {
   const availableSlideTypes = ['TblStr' , 'Eqs' , 'grid' , 'canvas'];
-  const data = await healthFn(diagnoser,availableSlideTypes);
+  const availableCanvasItems = [
+    'piechart',
+'repeatText',
+'repeatDot',
+'icon',
+'dot',
+'angleSymbol',
+'sprite',
+'para',
+'triangle',
+'text',
+'ellipse',
+'ray',
+'line',
+'lines',
+'rect',
+'image',
+'image2',
+'circle',
+  ];
+
+  const data = await healthFn(diagnoser,availableSlideTypes,availableCanvasItems);
   const availableTcodes = [];
-  const availableItemCommands = [];
+
   // console.log(data);
   res.render('home', { data });
 });
