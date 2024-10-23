@@ -21,6 +21,11 @@ app.get('/', async (req, res) => {
   // console.log(data);
   res.render('home', { data });
 });
+app.get('/missing', async (req, res) => {
+  const data = diagnoser.canvasItemsFieldscheck();
+  console.log(data);
+  res.render('missing', { data });
+});
 
 app.get('/health', async (req, res) => {
   const availableSlideTypes = ['TblStr' , 'Eqs' , 'grid' , 'canvas'];

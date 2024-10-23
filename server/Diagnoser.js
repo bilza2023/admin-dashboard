@@ -1,3 +1,27 @@
+const EXPECTED_FIELDS = {
+    line: ['x1', 'y1', 'x2', 'y2', 'lineWidth'],
+    lines: ['x', 'y', 'drawBorder', 'fill', 'color', 'fillBg', 'bgColor', 'width', 'height', 'lines'],
+    rectangle: ['x', 'y', 'width', 'height', 'filled', 'lineWidth'],
+    text: ['text', 'x', 'y', 'fontSize', 'font'],
+    ellipse: ['x', 'y', 'radiusX', 'radiusY', 'rotation', 'startAngle', 'endAngle', 'lineWidth', 'fill'],
+    'pie chart': ['x', 'y', 'radius', 'data'],
+    circle: ['x', 'y', 'radius', 'startAngle', 'endAngle', 'fill', 'lineWidth'],
+    bezier: ['x', 'y', 'x1', 'y1', 'x2', 'y2', 'lineWidth', 'showHandle'],
+    'angle symbol': ['x', 'y', 'radius', 'ticks', 'startAngle', 'endAngle', 'lineWidth', 'showOrigin'],
+    dot: ['x', 'y', 'label', 'dot_width', 'text_color', 'text_size', 'fill'],
+    icon: ['text', 'x', 'y', 'fontSize', 'iconSize', 'fontFamily', 'icon', 'showBg', 'iconOnTop', 'iconErrorX', 'iconErrorY', 'bgColor'],
+    grid: ['cellWidth', 'cellHeight', 'lineWidth', 'lineColor'],
+    polygon: ['points', 'filled', 'lineWidth'],
+    triangle: ['x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'lineWidth', 'filled'],
+    ray: ['x0', 'y0', 'x1', 'y1', 'lineWidth', 'arrowWidth', 'arrowHeight', 'startArrow', 'endArrow'],
+    'repeat dot': ['numberOfDots', 'initialX', 'initialY', 'xFactor', 'yFactor', 'width'],
+    'repeat text': ['textArray', 'initialX', 'initialY', 'xFactor', 'yFactor', 'font'],
+    paragraph: ['text', 'x', 'y', 'font', 'fontSize', 'lineHeightOffset', 'xOffset'],
+    'system image': ['src', 'x', 'y', 'width', 'height'],
+    image: ['src', 'image', 'x', 'y', 'ext', 'width', 'height'],
+    image2: ['src', 'image', 'sx', 'sy', 'sw', 'sh', 'dx', 'dy', 'width', 'height', 'ext'],
+    sprite: ['spriteId', 'sheet', 'sheetItem', 'dx', 'dy', 'wFactor', 'hFactor']
+};
 class Diagnoser {
     constructor(data) {
         this.data = Array.isArray(data) ? data : [data];
@@ -269,7 +293,58 @@ class Diagnoser {
         });
         return Array.from(commands);
     }
-    
+// Add the canvasItemsFieldscheck method to the Diagnoser class
+canvasItemsFieldscheck() {
+    const missingFieldsResults = [];
+
+    // Iterate through each presentation in data
+    this.data.forEach(presentation => {
+        // Iterate through each slide in the presentation
+        presentation.slides.forEach(slide => {
+            // Check only canvas type slides
+            if (slide.type === "canvas") {
+                // Check each item in the slide
+                slide.items.forEach(item => {
+                    if (item.extra && item.extra.command) {
+                        const itemCommand = item.extra.command.toLowerCase();
+                        
+                        // Get expected fields for this item type
+                        const expectedFields = EXPECTED_FIELDS[itemCommand];
+                        
+                        if (expectedFields) {
+                            // Check for missing fields
+                            const missingFields = [];
+                            
+                            expectedFields.forEach(field => {
+                                // Check if the field exists in item.extra
+                                // For animated properties, check if they exist as objects with initialValue
+                                const hasField = item.extra[field] !== undefined || 
+                                               (item.extra[field] && item.extra[field].initialValue !== undefined);
+                                
+                                if (!hasField) {
+                                    missingFields.push(field);
+                                }
+                            });
+
+                            // If there are missing fields, add to results
+                            if (missingFields.length > 0) {
+                                missingFieldsResults.push({
+                                    presentationId: presentation._id.$oid,
+                                    slideId:  slide._id.$oid,
+                                    itemName: itemCommand,
+                                    missingFields: missingFields
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    return missingFieldsResults;
+}    
+///////////////////////////////////////////////////////////    
 }
 
 module.exports = Diagnoser;
